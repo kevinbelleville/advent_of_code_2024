@@ -173,5 +173,44 @@ def diagonal_check(grid):
 
     return count/2 # double counted the diagonals accidentally
 
+def diagonal_check_part_2(grid):
+    count = 0
+    rows = len(grid)
+    cols = len(grid[0])
+
+    """
+    Ways to make the X MAS
+    M S
+     A
+    M S
+    I think it's bounded by the number of A's. There's gotta be an A in the center, and the A has to have two M's and two S's
+    in the corners, though the orientation is irrelevant.
+    """
+
+    poss = [
+        "SSMM",
+        "MMSS",
+        "MSMS",
+        "SMSM",
+    ]
+
+    # Top-left to bottom-right
+    for i in range(1, rows-1):
+        for j in range(1, cols-1): # starts at 1 because if an A is on the outer edge it can't make a cross
+            if grid[i][j] == 'A':
+                s = ""
+                corners = [(i+1, j-1),(i+1, j+1),(i-1, j-1),(i-1, j+1)]
+                for cx, cy in corners:
+                    s += grid[cx][cy]
+                if s in poss:
+                    count += 1
+                    print(s)
+            
+
+    return count 
+
+
 xmas_count = horizontal_check(xmas_grid) + vertical_check(xmas_grid) + diagonal_check(xmas_grid)
+mas_count = diagonal_check_part_2(xmas_grid)
 print(f"Total instances of XMAS found: {xmas_count}")
+print(f"Total instances of MAS found: {mas_count}")
